@@ -115,10 +115,23 @@ def ping(host, timeout=1):
    # Calculate vars values and return them
    #  vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),str(round(stdev(stdev_var), 2))]
    # Send ping requests to a server separated by approximately one second
-   for i in range(0,4):
-       delay = doOnePing(dest, timeout)
-       print(delay)
-       time.sleep(1)  # one second
+   ttl = []
+   for i in range(0, 4):
+        delay = doOnePing(dest, timeout)
+        print("Reply from: " + dest + " Time: " + str(round(delay, 2) * 1000) + " ms")
+        time.sleep(1)  # one second
+        #   ttl.append(round(delay,2))
+        ttl.append(delay)
+   print("")
+   print("---- Google.co.il ping statistics ----")
+   print("Ping statistics for " + dest + ":")
+   packet_min = (min(ttl)) * 1000
+   packet_max = (max(ttl)) * 1000
+   packet_avg = ((sum(ttl)) / 4) * 1000
+   stdev_var = (stdev(ttl)) * 1000
+   print("('" + str(round(packet_min, 2)) + "','" + str(round(packet_max, 2)) + "','" + str(
+        round(packet_avg, 2)) + "','" + str(round(stdev_var, 2)) + "')")
+   vars = [(round(packet_min, 2)), (round(packet_avg, 2)),(round(packet_max, 2)), (round(stdev_var, 2))]
 
    return vars
 
